@@ -10,6 +10,7 @@ const forecast = document.getElementById('forecast')
 const forecastCity = document.getElementById('forecast-city')
 let lat
 let lon
+let storedSearches = []
 
 // Fetch current weather on page load to show initial weather
 window.onload = async () => {
@@ -26,6 +27,7 @@ window.onload = async () => {
 // Fetch openweathermap forecast api for our app on form submit
 form.onsubmit = async (e) => {
   e.preventDefault()
+  forecast.innerHTML = ''
   const response = await fetch(
     `http://api.openweathermap.org/data/2.5/forecast?q=${search.value}&units=imperial&appid=486060bafc6b2d129e48e59a2e9520a8`
   )
@@ -36,10 +38,16 @@ form.onsubmit = async (e) => {
     search.value = ''
     alert(`Error:${data.cod} That city wasn't found. Please try again!`)
   } else {
+    storedSearches.push(search.value)
+    storedSearches.map((search) => {
+      recentSearches.innerHTML += `<button type='button' class="btn btn-outline-primary mr-1 mt-1">${search}</button>`
+    })
+    storedSearches.shift()
     // Otherwise, lets first set the city for the forecast. This can also be done using search.value, but it's lowercase
     forecastCity.textContent = `5 Day forecast for ${data.city.name}`
-    // Map over all of the data in the array
-    data.list.map((weather) => {
+
+    //Map over all of the data in the array
+    data.list.forEach((weather) => {
       // We have a lot of data in the array for the same days.
       // I assumed its for morning, day, mid day, night, midnight.
       // In military time, if it's around mid day, lets return that weather forecast data
@@ -48,7 +56,7 @@ form.onsubmit = async (e) => {
       // prepared with react. (I have been using react for a few years)
       weather.dt_txt.includes('15:00:00')
         ? (forecast.innerHTML += `
-      <div class="col p-3">    
+      <div class="col p-3">
       <div class="row">
           <div class="card" style="width: auto; margin-right:1em;">
               <div class="card-body">
@@ -58,9 +66,9 @@ form.onsubmit = async (e) => {
                 <p class="card-text">Wind: ${weather.wind.speed}mph</p>
                 <p class="card-text">Humidity: ${weather.main.humidity}%</p>
               </div>
-          </div>                              
+          </div>
       </div>
-  </div>
+    <div>
       `)
         : null
     })
