@@ -2,7 +2,7 @@
 
 # What's this?
 
-A weather app that uses boostrap, local storage, and jquery.
+A weather app that uses boostrap, local storage, and javascript.
 
 # Built with
 
