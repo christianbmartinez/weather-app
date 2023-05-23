@@ -18,6 +18,7 @@ const getTodaysWeather = async (city) => {
     `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=486060bafc6b2d129e48e59a2e9520a8&units=imperial`
   )
   const data = await response.json()
+  // Asign our data to the page
   cityName.textContent = `${city} ${dayjs(new Date()).format('M/D/YYYY')}`
   temp.textContent = `Temp: ${data.main.temp}°F`
   wind.textContent = `Wind: ${data.wind.speed}mph`
@@ -26,14 +27,19 @@ const getTodaysWeather = async (city) => {
 
 // Function for getting recent searches
 const getRecentSearches = () => {
-  localStorage.getItem('searches') ? localStorage.getItem('searches') : ''
+  localStorage.getItem('searches')
+  // Store the searches array named storedSearches into local storage. (Our buttons)
   localStorage.setItem('searches', storedSearches)
+  // Assign it to the page
   recentSearches.innerHTML = localStorage.getItem('searches')
+    ? localStorage.getItem('searches')
+    : ''
 }
 
 // Function for getting the weather forecast with the form
 const getWeatherForecast = async (e) => {
   e.preventDefault()
+  // Update weather div with the city of the search value
   getTodaysWeather(search.value)
   forecast.innerHTML = ''
   const response = await fetch(
@@ -46,11 +52,12 @@ const getWeatherForecast = async (e) => {
     search.value = ''
     alert(`Error:${data.cod} That city wasn't found. Please try again!`)
   } else {
+    // We are pushing buttons that are stored in local storage, using this.innerText as the search query
     storedSearches.push(
       `<button type='button' onclick=getWeatherForecastForRecentSearch(this.innerText) class="btn btn-outline-primary mr-1 mt-1">${search.value}</button>`
     )
     getRecentSearches()
-    // Otherwise, lets first set the city for the forecast. This can also be done using search.value, but it's lowercase
+    // Update the forecast city name. This can also be done using search.value, but it's lowercase
     forecastCity.textContent = `5 Day forecast for ${data.city.name}`
 
     //Map over all of the data in the array
