@@ -1,4 +1,4 @@
-![alt text](https://github.com/christianbmartinez/weather-app/blob/main/img/projectimg.jpg)
+![alt text](https://github.com/christianbmartinez/weather-app/blob/main/img/projectimgweather.JPG)
 
 # What's this?
 
