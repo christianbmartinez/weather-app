@@ -8,4 +8,4 @@ A weather app that uses boostrap, local storage, and javascript.
 
 HTML, CSS, JS, Openweathermap API
 
-[View live](https://weatherapp.christianbmartinez.com/)
+[View live](https://beautiful-puffpuff-015884.netlify.app/)
